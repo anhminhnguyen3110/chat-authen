@@ -1,7 +1,7 @@
 import { validate } from "uuid";
-import { getApiKey } from "@/lib/api-key";
 import { Thread } from "@langchain/langgraph-sdk";
 import { useQueryState } from "nuqs";
+import { useSession } from "next-auth/react";
 import {
   createContext,
   useContext,
@@ -38,10 +38,12 @@ export function ThreadProvider({ children }: { children: ReactNode }) {
   const [assistantId] = useQueryState("assistantId");
   const [threads, setThreads] = useState<Thread[]>([]);
   const [threadsLoading, setThreadsLoading] = useState(false);
+  const { data: session } = useSession();
 
   const getThreads = useCallback(async (): Promise<Thread[]> => {
     if (!apiUrl || !assistantId) return [];
-    const client = createClient(apiUrl, getApiKey() ?? undefined);
+    const accessToken = session?.accessToken;
+    const client = createClient(apiUrl, accessToken);
 
     const threads = await client.threads.search({
       metadata: {
@@ -51,7 +53,7 @@ export function ThreadProvider({ children }: { children: ReactNode }) {
     });
 
     return threads;
-  }, [apiUrl, assistantId]);
+  }, [apiUrl, assistantId, session?.accessToken]);
 
   const value = {
     getThreads,

@@ -110,6 +110,7 @@ export function Thread() {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
 
   const stream = useStreamContext();
+  const { assistantId, setAssistantId } = stream;
   const messages = stream.messages;
   const isLoading = stream.isLoading;
 
@@ -407,7 +408,26 @@ export function Thread() {
                     />
 
                     <div className="flex items-center justify-between p-2 pt-4">
-                      <div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center space-x-2">
+                          <Label
+                            htmlFor="assistant-select"
+                            className="text-sm text-gray-600 font-medium"
+                          >
+                            Assistant:
+                          </Label>
+                          <select
+                            id="assistant-select"
+                            value={assistantId || "agent"}
+                            onChange={(e) => setAssistantId(e.target.value)}
+                            className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-800 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer shadow-sm"
+                          >
+                            <option value="agent">🤖 Agent</option>
+                            <option value="assistant">💼 Assistant</option>
+                            <option value="chatbot">💬 Chatbot</option>
+                            <option value="helper">🛠️ Helper</option>
+                          </select>
+                        </div>
                         <div className="flex items-center space-x-2">
                           <Switch
                             id="render-tool-calls"
