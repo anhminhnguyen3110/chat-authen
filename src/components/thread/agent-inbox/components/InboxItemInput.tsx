@@ -4,7 +4,7 @@ import React from "react";
 import { haveArgsChanged, prettifyText } from "../utils";
 import { Button } from "@/components/ui/button";
 import { Undo2 } from "lucide-react";
-import { MarkdownText } from "../../markdown-text";
+import { MarkdownText } from "../../MarkdownText";
 import { ActionRequest, HumanInterrupt } from "@langchain/langgraph/prebuilt";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
@@ -35,10 +35,10 @@ function ArgsRenderer({ args }: { args: Record<string, any> }) {
 
         return (
           <div key={`args-${k}`} className="flex flex-col gap-1 items-start">
-            <p className="text-sm leading-[18px] text-gray-600 text-wrap">
+            <p className="text-sm leading-[18px] text-muted-foreground text-wrap">
               {prettifyText(k)}:
             </p>
-            <span className="text-[13px] leading-[18px] text-black bg-zinc-100 rounded-xl p-3 w-full max-w-full">
+            <span className="text-[13px] leading-[18px] text-foreground bg-secondary rounded-xl p-3 w-full max-w-full">
               <MarkdownText>{value}</MarkdownText>
             </span>
           </div>
@@ -104,9 +104,9 @@ function ResponseComponent({
   };
 
   return (
-    <div className="flex flex-col gap-4 p-6 items-start w-full rounded-xl border-[1px] border-gray-300">
+    <div className="flex flex-col gap-4 p-6 items-start w-full rounded-xl border-[1px] border-border">
       <div className="flex items-center justify-between w-full">
-        <p className="font-semibold text-black text-base">
+        <p className="font-semibold text-foreground text-base">
           Respond to assistant
         </p>
         <ResetButton
@@ -154,7 +154,7 @@ function AcceptComponent({
   ) => Promise<void>;
 }) {
   return (
-    <div className="flex flex-col gap-4 items-start w-full p-6 rounded-lg border-[1px] border-gray-300">
+    <div className="flex flex-col gap-4 items-start w-full p-6 rounded-lg border-[1px] border-border">
       {actionRequestArgs && Object.keys(actionRequestArgs).length > 0 && (
         <ArgsRenderer args={actionRequestArgs} />
       )}
@@ -251,9 +251,9 @@ function EditAndOrAcceptComponent({
   };
 
   return (
-    <div className="flex flex-col gap-4 items-start w-full p-6 rounded-lg border-[1px] border-gray-300">
+    <div className="flex flex-col gap-4 items-start w-full p-6 rounded-lg border-[1px] border-border">
       <div className="flex items-center justify-between w-full">
-        <p className="font-semibold text-black text-base">{header}</p>
+        <p className="font-semibold text-foreground text-base">{header}</p>
         <ResetButton handleReset={handleReset} />
       </div>
 
@@ -509,7 +509,7 @@ export function InboxItemInput({
           onResponseChange={onResponseChange}
           handleSubmit={handleSubmit}
         />
-        {streaming && <p className="text-sm text-gray-600">Running...</p>}
+        {streaming && <p className="text-sm text-muted-foreground">Running...</p>}
         {streamFinished && (
           <p className="text-base text-green-600 font-medium">
             Successfully finished Graph invocation.

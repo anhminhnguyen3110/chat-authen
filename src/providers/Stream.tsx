@@ -15,6 +15,7 @@ import { useQueryState } from "nuqs";
 import { useThreads } from "./Thread";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { useCanvas } from "@/contexts/CanvasContext";
 
 export type StateType = { messages: Message[]; ui?: UIMessage[] };
 
@@ -65,6 +66,7 @@ const StreamSession = ({
   const [threadId, setThreadId] = useQueryState("threadId");
   const { getThreads, setThreads } = useThreads();
   const { data: session } = useSession();
+  const { setCurrentFile, addVersion, setIsLoading } = useCanvas();
   
   // Get access token from session
   const accessToken = session?.accessToken;
@@ -106,6 +108,55 @@ const StreamSession = ({
       }
     });
   }, [apiUrl]);
+
+  // Listen for file creation/updates from AI tool calls
+  useEffect(() => {
+    const messages = streamValue.messages || [];
+    const lastMessage = messages[messages.length - 1];
+    
+    // Set loading state when AI is streaming
+    if (streamValue.isLoading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+    
+    if (lastMessage?.type === "ai" && "tool_calls" in lastMessage && lastMessage.tool_calls) {
+      // Check if create_file or update_file was called
+      const fileToolCalls = lastMessage.tool_calls.filter(
+        (tc: any) => tc.name === "create_file" || tc.name === "update_file"
+      );
+      
+      if (fileToolCalls.length > 0) {
+        const latestToolCall = fileToolCalls[fileToolCalls.length - 1];
+        
+        if (latestToolCall.args) {
+          const { file_type, title, content, file_id } = latestToolCall.args;
+          
+          if (content && title) {
+            const newFile = {
+              fileId: file_id || Date.now().toString(),
+              threadId: threadId || "",
+              type: file_type || "markdown",
+              title: title,
+              content: content,
+              metadata: {},
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            };
+            
+            // If it's create_file, add as new version
+            if (latestToolCall.name === "create_file") {
+              addVersion(newFile);
+            } else {
+              // If it's update_file, also add as new version for history
+              addVersion(newFile);
+            }
+          }
+        }
+      }
+    }
+  }, [streamValue.messages, streamValue.isLoading, threadId, setCurrentFile, addVersion, setIsLoading]);
 
   return (
     <StreamContext.Provider value={{ ...streamValue, assistantId, setAssistantId }}>

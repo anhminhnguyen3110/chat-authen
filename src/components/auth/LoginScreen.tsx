@@ -11,7 +11,7 @@ export function LoginScreen() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-secondary dark:from-gray-900 dark:to-gray-800">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <p className="text-sm text-muted-foreground">Initializing...</p>
@@ -21,7 +21,7 @@ export function LoginScreen() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-background to-secondary dark:from-gray-900 dark:to-gray-800">
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">

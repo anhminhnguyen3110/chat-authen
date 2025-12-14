@@ -3,6 +3,7 @@
 import { Thread } from "@/components/thread";
 import { StreamProvider } from "@/providers/Stream";
 import { ThreadProvider } from "@/providers/Thread";
+import { AssistantRuntimeWrapper } from "@/providers/AssistantRuntime";
 import { Toaster } from "@/components/ui/sonner";
 import { LoginScreen } from "@/components/auth/LoginScreen";
 import { useAuth } from "@/hooks/useAuthContext";
@@ -20,7 +21,9 @@ export default function Home(): React.ReactNode {
       <Toaster />
       <ThreadProvider>
         <StreamProvider>
-          <Thread />
+          <AssistantRuntimeWrapper>
+            <Thread />
+          </AssistantRuntimeWrapper>
         </StreamProvider>
       </ThreadProvider>
     </React.Suspense>

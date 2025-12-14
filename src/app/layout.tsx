@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import React from "react";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { SessionProvider } from "@/providers/SessionProvider";
+import { CanvasProvider } from "@/contexts/CanvasContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,9 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-background`} suppressHydrationWarning>
         <SessionProvider>
-          <NuqsAdapter>{children}</NuqsAdapter>
+          <CanvasProvider>
+            <NuqsAdapter>{children}</NuqsAdapter>
+          </CanvasProvider>
         </SessionProvider>
       </body>
     </html>

@@ -8,9 +8,9 @@ import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { FC, memo, useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
-import { SyntaxHighlighter } from "@/components/thread/syntax-highlighter";
+import { SyntaxHighlighter } from "@/components/thread/SyntaxHighlighter";
 
-import { TooltipIconButton } from "@/components/thread/tooltip-icon-button";
+import { TooltipIconButton } from "@/components/ui/tooltip-icon-button";
 import { cn } from "@/lib/utils";
 
 import "katex/dist/katex.min.css";
@@ -47,7 +47,7 @@ const CodeHeader: FC<CodeHeaderProps> = ({ language, code }) => {
   };
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-t-lg bg-zinc-900 px-4 py-2 text-sm font-semibold text-white">
+    <div className="flex items-center justify-between gap-4 rounded-t-lg bg-code-header-bg px-4 py-2 text-sm font-semibold text-card">
       <span className="lowercase [&>span]:text-xs">{language}</span>
       <TooltipIconButton tooltip="Copy" onClick={onCopy}>
         {!isCopied && <CopyIcon />}
@@ -190,7 +190,7 @@ const defaultComponents: any = {
   pre: ({ className, ...props }: { className?: string }) => (
     <pre
       className={cn(
-        "overflow-x-auto rounded-lg bg-black text-white max-w-4xl",
+        "overflow-x-auto rounded-lg bg-code-bg text-card max-w-4xl",
         className,
       )}
       {...props}

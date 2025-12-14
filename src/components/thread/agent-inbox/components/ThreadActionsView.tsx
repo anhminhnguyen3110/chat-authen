@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ThreadIdCopyable } from "./thread-id";
-import { InboxItemInput } from "./inbox-item-input";
-import useInterruptedActions from "../hooks/use-interrupted-actions";
+import { ThreadIdCopyable } from "./ThreadId";
+import { InboxItemInput } from "./InboxItemInput";
+import useInterruptedActions from "../hooks/useInterruptedActions";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useQueryState } from "nuqs";
@@ -32,7 +32,7 @@ function ButtonGroup({
         variant="outline"
         className={cn(
           "rounded-l-md rounded-r-none border-r-[0px]",
-          showingState ? "text-black" : "bg-white",
+          showingState ? "text-foreground" : "bg-card",
         )}
         size="sm"
         onClick={handleShowState}
@@ -43,7 +43,7 @@ function ButtonGroup({
         variant="outline"
         className={cn(
           "rounded-l-none rounded-r-md border-l-[0px]",
-          showingDescription ? "text-black" : "bg-white",
+          showingDescription ? "text-foreground" : "bg-card",
         )}
         size="sm"
         onClick={handleShowDescription}
@@ -115,7 +115,7 @@ export function ThreadActionsView({
             <Button
               size="sm"
               variant="outline"
-              className="flex items-center gap-1 bg-white"
+              className="flex items-center gap-1 bg-card"
               onClick={handleOpenInStudio}
             >
               Studio
@@ -133,7 +133,7 @@ export function ThreadActionsView({
       <div className="flex flex-row gap-2 items-center justify-start w-full">
         <Button
           variant="outline"
-          className="text-gray-800 border-gray-500 font-normal bg-white"
+          className="text-foreground border-border font-normal bg-card"
           onClick={handleResolve}
           disabled={actionsDisabled}
         >
@@ -142,7 +142,7 @@ export function ThreadActionsView({
         {ignoreAllowed && (
           <Button
             variant="outline"
-            className="text-gray-800 border-gray-500 font-normal bg-white"
+            className="text-foreground border-border font-normal bg-card"
             onClick={handleIgnore}
             disabled={actionsDisabled}
           >

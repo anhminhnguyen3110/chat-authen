@@ -93,7 +93,7 @@ export default function ThreadHistory() {
       <div className="hidden lg:flex flex-col border-r-[1px] border-slate-300 items-start justify-start gap-6 h-screen w-[300px] shrink-0 shadow-inner-right">
         <div className="flex items-center justify-between w-full pt-1.5 px-4">
           <Button
-            className="hover:bg-gray-100"
+            className="hover:bg-secondary"
             variant="ghost"
             onClick={() => setChatHistoryOpen((p) => !p)}
           >

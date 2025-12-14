@@ -1,5 +1,49 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
+import { JWT } from "next-auth/jwt";
+
+/**
+ * Takes a token and returns a new token with updated access token
+ */
+async function refreshAccessToken(token: JWT) {
+  try {
+    const issuer = process.env.KEYCLOAK_ISSUER!;
+    const tokenEndpoint = `${issuer}/protocol/openid-connect/token`;
+
+    const response = await fetch(tokenEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        client_id: process.env.KEYCLOAK_ID!,
+        client_secret: process.env.KEYCLOAK_SECRET!,
+        grant_type: "refresh_token",
+        refresh_token: token.refreshToken as string,
+      }),
+    });
+
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) {
+      throw refreshedTokens;
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+      idToken: refreshedTokens.id_token,
+    };
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -10,19 +54,39 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.idToken = account.id_token;
+    async jwt({ token, account, user }) {
+      // Initial sign in
+      if (account && user) {
+        return {
+          accessToken: account.access_token,
+          accessTokenExpires: account.expires_at! * 1000, // Convert to milliseconds
+          refreshToken: account.refresh_token,
+          idToken: account.id_token,
+          user,
+        };
       }
-      return token;
+
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < (token.accessTokenExpires as number)) {
+        return token;
+      }
+
+      // Access token has expired, try to refresh it
+      console.log("Access token expired, refreshing...");
+      return refreshAccessToken(token);
     },
     async session({ session, token }) {
       // Add access token to session
       session.accessToken = token.accessToken as string;
       session.idToken = token.idToken as string;
+      session.error = token.error as string | undefined;
+
       return session;
     },
+  },
+  session: {
+    // Set session max age to 5 minutes for testing
+    maxAge: 5 * 60, // 5 minutes in seconds
   },
 };
 
