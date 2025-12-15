@@ -46,6 +46,12 @@ export function CodeEditor() {
         onChange={handleChange}
         theme="light"
         className="text-sm"
+        basicSetup={{
+          lineNumbers: true,
+          highlightActiveLineGutter: true,
+          highlightActiveLine: true,
+          foldGutter: true,
+        }}
       />
     </div>
   );

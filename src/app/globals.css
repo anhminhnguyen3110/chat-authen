@@ -174,3 +174,45 @@
     box-shadow: inset 9px 0 6px -1px rgb(0 0 0 / 0.02);
   }
 }
+
+/* CodeMirror theme overrides for warm background */
+.cm-editor {
+  background-color: oklch(0.995 0.003 85) !important;
+}
+
+.cm-scroller {
+  background-color: oklch(0.995 0.003 85) !important;
+}
+
+.cm-content {
+  background-color: oklch(0.995 0.003 85) !important;
+}
+
+.cm-gutters {
+  background-color: oklch(0.985 0.005 85) !important;
+  border-right-color: oklch(0.90 0.008 85) !important;
+}
+
+.cm-activeLine {
+  background-color: oklch(0.96 0.008 85) !important;
+}
+
+.cm-activeLineGutter {
+  background-color: oklch(0.96 0.008 85) !important;
+}
+
+.cm-selectionBackground {
+  background-color: oklch(0.55 0.15 35 / 0.1) !important;
+}
+
+.cm-focused .cm-selectionBackground {
+  background-color: oklch(0.55 0.15 35 / 0.2) !important;
+}
+
+.cm-cursor {
+  border-left-color: oklch(0.55 0.15 35) !important;
+}
+
+.cm-line {
+  background: transparent !important;
+}

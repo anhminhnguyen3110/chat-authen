@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeMirror Theme Test</title>
+  <style>
+    body {
+      background: oklch(0.985 0.005 85);
+      padding: 20px;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: oklch(0.995 0.003 85);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      padding: 16px 20px;
+      margin: 0;
+      background: oklch(0.985 0.005 85);
+      border-bottom: 1px solid oklch(0.90 0.008 85);
+    }
+    /* CodeMirror theme overrides */
+    .cm-editor {
+      background: oklch(0.995 0.003 85) !important;
+    }
+    .cm-scroller {
+      background: oklch(0.995 0.003 85) !important;
+    }
+    .cm-content {
+      background: oklch(0.995 0.003 85) !important;
+    }
+    .cm-gutters {
+      background: oklch(0.985 0.005 85) !important;
+      border-right: 1px solid oklch(0.90 0.008 85) !important;
+    }
+    .cm-line {
+      background: transparent !important;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uiw/react-codemirror@4.21.21/dist/index.css">
+</head>
+<body>
+  <div class="container">
+    <h1>CodeMirror Background Test</h1>
+    <div id="editor"></div>
+  </div>
+
+  <script type="module">
+    import { EditorView, basicSetup } from 'https://cdn.jsdelivr.net/npm/codemirror@6.0.1/+esm';
+    import { javascript } from 'https://cdn.jsdelivr.net/npm/@codemirror/lang-javascript@6.2.1/+esm';
+
+    const code = `interface User {
+  name: string;
+  email: string;
+  age: number;
+}
+
+function greet(user: User): string {
+  return \`Hello, \${user.name}!\`;
+}`;
+
+    new EditorView({
+      doc: code,
+      extensions: [basicSetup, javascript()],
+      parent: document.getElementById('editor')
+    });
+  </script>
+</body>
+</html>

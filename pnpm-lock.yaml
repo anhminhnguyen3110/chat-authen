@@ -35,6 +35,9 @@ importers:
       '@codemirror/lang-python':
         specifier: ^6.2.1
         version: 6.2.1
+      '@codemirror/view':
+        specifier: ^6.39.4
+        version: 6.39.4
       '@langchain/core':
         specifier: ^0.3.42
         version: 0.3.79
